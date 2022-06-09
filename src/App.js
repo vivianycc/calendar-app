@@ -6,10 +6,14 @@ import Sidebar from "./components/Sidebar";
 import Month from "./components/Month";
 import GlobalContext from "./context/GlobalContext";
 import EventModal from "./components/EventModal";
+import { google } from "googleapis";
 
 function App() {
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const { monthIndex, showEventModal } = useContext(GlobalContext);
+
+  const calendar = google.calendar("v3");
+
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
   }, [monthIndex]);
@@ -20,6 +24,7 @@ function App() {
         <CalendarHeader />
         <div className="flex flex-1">
           <Sidebar />
+          {console.log(calendar)}
           <Month month={currentMonth} />
         </div>
       </div>
