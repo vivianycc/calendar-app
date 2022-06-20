@@ -29,35 +29,35 @@ export default function SmallCalendar() {
     const slcDay = daySelected && daySelected.format(format);
 
     if (nowDay === currDay) {
-      return "bg-blue-500 rounded-full text-white";
+      return "bg-blue-500  text-white";
     } else if (currDay === slcDay) {
-      return "bg-blue-100 rounded-full text-blue-600 font-bold";
+      return "bg-blue-100 text-blue-600 font-bold";
     } else {
       return "";
     }
   }
   return (
     <div className="mt-9">
-      <header className="flex justify-between">
-        <p className="text-gray-500 font-bold">
+      <header className="pl-2 pr-1 flex justify-between">
+        <p className="text-gray-700">
           {dayjs(new Date(dayjs().year(), currentMonthIdx)).format("MMMM YYYY")}
         </p>
         <div>
           <button onClick={handlePrevMonth}>
-            <span className="material-icons-outlined cursor-pointer text-gray-600 mx-2">
+            <span className="material-icons-outlined cursor-pointer text-gray-500 mr-1 ">
               chevron_left
             </span>
           </button>
           <button onClick={handleNextMonth}>
-            <span className="material-icons-outlined cursor-pointer text-gray-600 mx-2">
+            <span className="material-icons-outlined cursor-pointer text-gray-500 ">
               chevron_right
             </span>
           </button>
         </div>
       </header>
-      <div className="grid grid-cols-7 grid-rows-6">
+      <div className="grid grid-cols-7 grid-rows-6 items-center">
         {currentMonth[0].map((day, i) => (
-          <span key={i} className="text-sm py-1 text-center">
+          <span key={i} className="text-xs py-1 text-center text-gray-500">
             {day.format("dd").charAt(0)}
           </span>
         ))}
@@ -70,9 +70,11 @@ export default function SmallCalendar() {
                   setSmallCalendarMonth(currentMonthIdx);
                   setDaySelected(day);
                 }}
-                className={`py-1 w-full ${getDayClass(day)}`}
+                className={`place-self-center py-1 my-0.5 h-6 w-6 rounded-full flex items-center justify-center hover:bg-gray-200 ${getDayClass(
+                  day
+                )}`}
               >
-                <span className="text-sm">{day.format("D")}</span>
+                <span className="text-xs">{day.format("D")}</span>
               </button>
             ))}
           </React.Fragment>

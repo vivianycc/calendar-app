@@ -1,6 +1,18 @@
 import React, { useEffect, useState, useReducer, useMemo } from "react";
 import dayjs from "dayjs";
 import GlobalContext from "./GlobalContext";
+import ApiCalendar from "react-google-calendar-api";
+import { config } from "../ApiCalendar.config";
+
+const apiCalendar = new ApiCalendar(config);
+
+apiCalendar.onLoadCallback = (callback) => {
+  console.log(111);
+  apiCalendar.tokenClient.callback = () => {
+    console.log(222);
+    callback();
+  };
+};
 
 function savedEventsReducer(state, { type, payload }) {
   switch (type) {
@@ -19,8 +31,14 @@ function initEvents() {
   const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
   return parsedEvents;
 }
+function initGoogleEvents() {
+  const storageEvents = localStorage.getItem("googleEvents");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+}
 
 export default function ContextWrapper(props) {
+  const [signedIn, setSignedIn] = useState(false);
   const [monthIndex, setMonthIndex] = useState(dayjs().month());
   const [smallCalendarMonth, setSmallCalendarMonth] = useState(null);
   const [daySelected, setDaySelected] = useState(dayjs());
@@ -40,9 +58,13 @@ export default function ContextWrapper(props) {
         .includes(evt.label)
     );
   }, [savedEvents, labels]);
+
+  const [googleEvents, setGoogleEvents] = useState(initGoogleEvents());
+
   useEffect(() => {
     localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
-  }, [savedEvents]);
+    // localStorage.setItem("googleEvents", JSON.stringify(googleEvents));
+  }, [savedEvents, googleEvents]);
 
   useEffect(() => {
     setLabels((prevLabels) => {
@@ -74,6 +96,8 @@ export default function ContextWrapper(props) {
   return (
     <GlobalContext.Provider
       value={{
+        signedIn,
+        setSignedIn,
         monthIndex,
         setMonthIndex,
         smallCalendarMonth,
@@ -90,6 +114,9 @@ export default function ContextWrapper(props) {
         setLabels,
         updateLabel,
         filteredEvents,
+        apiCalendar,
+        googleEvents,
+        setGoogleEvents,
       }}
     >
       {props.children}
