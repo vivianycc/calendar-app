@@ -7,7 +7,7 @@ import { config } from "../ApiCalendar.config";
 const apiCalendar = new ApiCalendar(config);
 
 apiCalendar.onLoadCallback = (callback) => {
-  console.log(111);
+  console.log(apiCalendar.tokenClient);
   apiCalendar.tokenClient.callback = () => {
     console.log(222);
     callback();

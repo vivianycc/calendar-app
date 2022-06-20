@@ -24,27 +24,11 @@ function App() {
     console.log(currentMonth);
   }, [monthIndex]);
 
-  const signIn = () => {
-    apiCalendar.handleAuthClick();
-
-    apiCalendar.onLoadCallback(() => setSignedIn(true));
-  };
-
-  useEffect(() => {
-    if (signedIn) {
-      console.log("is signed in, get events");
-      apiCalendar.listUpcomingEvents(10).then(({ result }) => {
-        console.log(result.items);
-        setGoogleEvents(result.items);
-      });
-    }
-  }, [signedIn]);
   // createEventsForDisplay();
   return (
     <React.Fragment>
       <div className="h-screen flex flex-col">
         <CalendarHeader />
-        <button onClick={() => signIn()}>signIn</button>
 
         <div className="flex flex-1">
           <Sidebar />

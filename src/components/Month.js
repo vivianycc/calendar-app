@@ -14,6 +14,7 @@ export default function Month({ month }) {
   const obj = createEventsForDisplay(array);
 
   function displayEvents() {
+    console.log(googleEvents);
     return Object.keys(obj).map((key) => {
       const { startPos, endPos, week, events } = obj[key];
       return (
